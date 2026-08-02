@@ -42,7 +42,7 @@ type Info struct {
 	// Scheduler parameters to add to the RuntimeJobTemplate.
 	Scheduler *Scheduler
 	// TemplateSpec is TrainingRuntime Template object.
-	// ObjApply podSpecs and this PodSets should be kept in sync by info.SyncPodSetsToTemplateSpec().
+	// ObjApply podSpecs and this PodSets should be kept in sync by ComponentBuilderPlugin.SyncParallelCount.
 	TemplateSpec TemplateSpec
 }
 
@@ -159,6 +159,8 @@ func toPodSetContainer(containerApply ...corev1ac.ContainerApplyConfiguration) i
 		for _, cApply := range containerApply {
 			container := Container{
 				Name:         ptr.Deref(cApply.Name, ""),
+				Image:        ptr.Deref(cApply.Image, ""),
+				Command:      cApply.Command,
 				Env:          cApply.Env,
 				Ports:        cApply.Ports,
 				VolumeMounts: cApply.VolumeMounts,
